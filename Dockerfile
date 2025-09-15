@@ -1,12 +1,15 @@
 FROM ubuntu:latest
 
-# Install dependencies
+# Install system dependencies
 RUN apt-get update && apt-get install -y \
     python3.10 \
     python3-pip \
     git
 
-# Install Python packages using the default python3 interpreter
+# Upgrade pip and related tools to ensure they can handle modern packages
+RUN python3 -m pip install --upgrade pip setuptools wheel
+
+# Now, install the Python package
 RUN python3 -m pip install PyYAML
 
 # Copy application files
