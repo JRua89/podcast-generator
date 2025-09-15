@@ -28,4 +28,4 @@ COPY --chown=appuser:appuser entrypoint.sh ./entrypoint.sh
 USER appuser
 
 # Set the entrypoint
-ENTRYPOINT ["/home/appuser/entrypoint.sh"]
+ENTRYPOINT ["/entrypoint.sh"]
