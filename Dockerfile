@@ -4,17 +4,28 @@ FROM ubuntu:latest
 RUN apt-get update && apt-get install -y \
     python3.10 \
     python3-pip \
+    python3-venv \
     git
 
-# Upgrade pip and related tools for the current user
-RUN python3 -m pip install --upgrade --user pip setuptools wheel
+# Create a non-root user for security
+RUN useradd -m appuser
 
-# Now, install the Python package for the current user
-RUN python3 -m pip install --user PyYAML
+# Set working directory
+WORKDIR /home/appuser
+
+# Create and activate a virtual environment
+RUN python3 -m venv venv
+ENV PATH="/home/appuser/venv/bin:$PATH"
+
+# Now, install the Python package inside the virtual environment
+RUN pip install PyYAML
 
 # Copy application files
-COPY feed.py /usr/bin/feed.py
-COPY entrypoint.sh /entrypoint.sh
+COPY --chown=appuser:appuser feed.py ./feed.py
+COPY --chown=appuser:appuser entrypoint.sh ./entrypoint.sh
+
+# Set the user to run the container
+USER appuser
 
 # Set the entrypoint
-ENTRYPOINT ["/entrypoint.sh"]
+ENTRYPOINT ["/home/appuser/entrypoint.sh"]
