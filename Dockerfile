@@ -6,11 +6,11 @@ RUN apt-get update && apt-get install -y \
     python3-pip \
     git
 
-# Upgrade pip and related tools to ensure they can handle modern packages
-RUN python3 -m pip install --upgrade pip setuptools wheel
+# Upgrade pip and related tools for the current user
+RUN python3 -m pip install --upgrade --user pip setuptools wheel
 
-# Now, install the Python package
-RUN python3 -m pip install PyYAML
+# Now, install the Python package for the current user
+RUN python3 -m pip install --user PyYAML
 
 # Copy application files
 COPY feed.py /usr/bin/feed.py
